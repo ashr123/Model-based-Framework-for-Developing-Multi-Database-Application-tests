@@ -1,0 +1,435 @@
+{
+  "classes": {
+	"User": {
+	  "primaryKey": [
+		"username"
+	  ],
+	  "properties": {
+		"username": {
+		  "type": "string"
+		},
+		"password": {
+		  "type": "string"
+		},
+		"email": {
+		  "type": "string"
+		},
+		"lastLogin": {
+		  "type": "number"
+		},
+		"moviesDirector": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "Movie"
+		  }
+		},
+		"seriesDirector": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "Series"
+		  }
+		},
+		"episodesDirector": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "Episode"
+		  }
+		},
+		"moviesProducer": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "Movie"
+		  }
+		},
+		"seriesProducer": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "Series"
+		  }
+		},
+		"episodesProducer": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "Episode"
+		  }
+		},
+		"quotes": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "Quote"
+		  }
+		}
+	  }
+	},
+	"MovieRate": {
+	  "primaryKey": [
+		"user",
+		"movie"
+	  ],
+	  "properties": {
+		"user": {
+		  "type": "object",
+		  "javaType": "User"
+		},
+		"movie": {
+		  "type": "object",
+		  "javaType": "Movie"
+		},
+		"numericRating": {
+		  "type": "number"
+		},
+		"verbalRating": {
+		  "type": "string"
+		}
+	  }
+	},
+	"SeriesRate": {
+	  "primaryKey": [
+		"user",
+		"series"
+	  ],
+	  "properties": {
+		"user": {
+		  "type": "object",
+		  "javaType": "User"
+		},
+		"series": {
+		  "type": "object",
+		  "javaType": "Series"
+		},
+		"numericRating": {
+		  "type": "number"
+		},
+		"verbalRating": {
+		  "type": "string"
+		}
+	  }
+	},
+	"EpisodeRate": {
+	  "primaryKey": [
+		"user",
+		"episode"
+	  ],
+	  "properties": {
+		"user": {
+		  "type": "object",
+		  "javaType": "User"
+		},
+		"episode": {
+		  "type": "object",
+		  "javaType": "Episode"
+		},
+		"numericRating": {
+		  "type": "number"
+		},
+		"verbalRating": {
+		  "type": "string"
+		}
+	  }
+	},
+	"MovieRole": {
+	  "primaryKey": [
+		"user",
+		"movie"
+	  ],
+	  "properties": {
+		"user": {
+		  "type": "object",
+		  "javaType": "User"
+		},
+		"movie": {
+		  "type": "object",
+		  "javaType": "Movie"
+		},
+		"roles": {
+		  "type": "array",
+		  "items": {
+			"type": "string"
+		  }
+		}
+	  }
+	},
+	"SeriesRole": {
+	  "primaryKey": [
+		"user",
+		"series"
+	  ],
+	  "properties": {
+		"user": {
+		  "type": "object",
+		  "javaType": "User"
+		},
+		"series": {
+		  "type": "object",
+		  "javaType": "Series"
+		},
+		"roles": {
+		  "type": "array",
+		  "items": {
+			"type": "string"
+		  }
+		}
+	  }
+	},
+	"EpisodeRole": {
+	  "primaryKey": [
+		"user",
+		"episode"
+	  ],
+	  "properties": {
+		"user": {
+		  "type": "object",
+		  "javaType": "User"
+		},
+		"episode": {
+		  "type": "object",
+		  "javaType": "Episode"
+		},
+		"roles": {
+		  "type": "array",
+		  "items": {
+			"type": "string"
+		  }
+		}
+	  }
+	},
+	"Movie": {
+	  "primaryKey": [
+		"ID"
+	  ],
+	  "properties": {
+		"ID": {
+		  "type": "string"
+		},
+		"releaseDate": {
+		  "type": "number"
+		},
+		"title": {
+		  "type": "string"
+		},
+		"avgRating": {
+		  "type": "number"
+		},
+		"length": {
+		  "type": "number"
+		},
+		"media": {
+		  "type": "string"
+		},
+		"income": {
+		  "type": "number"
+		},
+		"genres": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "Genre"
+		  }
+		},
+		"directors": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "User"
+		  }
+		},
+		"producers": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "User"
+		  }
+		}
+	  }
+	},
+	"Series": {
+	  "primaryKey": [
+		"ID"
+	  ],
+	  "properties": {
+		"ID": {
+		  "type": "string"
+		},
+		"releaseDate": {
+		  "type": "number"
+		},
+		"title": {
+		  "type": "string"
+		},
+		"avgRating": {
+		  "type": "number"
+		},
+		"seasons": {
+		  "type": "number"
+		},
+		"network": {
+		  "type": "string"
+		},
+		"episodes": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "Episode"
+		  }
+		},
+		"genres": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "Genre"
+		  }
+		},
+		"directors": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "User"
+		  }
+		},
+		"producers": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "User"
+		  }
+		}
+	  }
+	},
+	"Episode": {
+	  "primaryKey": [
+		"ID"
+	  ],
+	  "properties": {
+		"ID": {
+		  "type": "string"
+		},
+		"releaseDate": {
+		  "type": "number"
+		},
+		"title": {
+		  "type": "string"
+		},
+		"avgRating": {
+		  "type": "number"
+		},
+		"length": {
+		  "type": "number"
+		},
+		"season": {
+		  "type": "number"
+		},
+		"number": {
+		  "type": "number"
+		},
+		"genres": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "Genre"
+		  }
+		},
+		"directors": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "User"
+		  }
+		},
+		"producers": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "User"
+		  }
+		}
+	  }
+	},
+	"Genre": {
+	  "primaryKey": [
+		"name"
+	  ],
+	  "properties": {
+		"name": {
+		  "type": "string"
+		},
+		"movies": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "Movie"
+		  }
+		},
+		"series": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "Series"
+		  }
+		},
+		"episodes": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "Episode"
+		  }
+		}
+	  }
+	},
+	"Quote": {
+	  "primaryKey": [
+		"ID"
+	  ],
+	  "properties": {
+		"ID": {
+		  "type": "string"
+		},
+		"text": {
+		  "type": "string"
+		},
+		"participants": {
+		  "type": "array",
+		  "items": {
+			"type": "object",
+			"javaType": "User"
+		  }
+		}
+	  }
+	},
+	"Goof": {
+	  "primaryKey": [
+		"ID"
+	  ],
+	  "properties": {
+		"ID": {
+		  "type": "string"
+		},
+		"text": {
+		  "type": "string"
+		},
+		"type": {
+		  "type": "string"
+		}
+	  }
+	},
+	"Trivia": {
+	  "primaryKey": [
+		"ID"
+	  ],
+	  "properties": {
+		"ID": {
+		  "type": "string"
+		},
+		"text": {
+		  "type": "string"
+		}
+	  }
+	}
+  }
+}
