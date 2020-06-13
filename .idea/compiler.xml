@@ -6,11 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Model-based-Framework-for-Developing-Multi-Database-Application-tests" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Model-based-Framework-for-Developing-Multi-Database-Application-tests" target="14" />
-    </bytecodeTargetLevel>
   </component>
 </project>
