@@ -1,0 +1,146 @@
+{
+  "fieldsMappings": {
+	"neo1": {
+	  "type": "neo4j",
+	  "connStr": "bolt://localhost:7687",
+	  "username": "neo4j",
+	  "password": "neo4j1"
+	},
+	"neo2": {
+	  "type": "neo4j",
+	  "connStr": "bolt://localhost:11008",
+	  "username": "neo4j",
+	  "password": "neo4j1"
+	},
+	"mongo1": {
+	  "type": "mongodb",
+	  "connStr": "mongodb://localhost",
+	  "location": "myDB"
+	},
+	"mongo2": {
+	  "type": "mongodb",
+	  "connStr": "mongodb://localhost",
+	  "location": "TestDB"
+	},
+	"sql1": {
+	  "type": "sql",
+	  "connStr": "jdbc:sqlite:src/test/resources/sqliteDBs/test.db"
+	},
+	"sql2": {
+	  "type": "sql",
+	  "connStr": "jdbc:sqlite:src/test/resources/sqliteDBs/test2.db"
+	}
+  },
+  "entities": {
+	"User": {
+	  "username": "mongo1",
+	  "password": "mongo1",
+	  "email": "mongo1",
+	  "lastLogin": "mongo1",
+	  "ID": "mongo1",
+	  "name": "mongo1",
+	  "dateofbirth": "mongo1",
+	  "gender": "mongo1",
+	  "moviesDirector": "mongo1",
+	  "seriesDirector": "mongo1",
+	  "episodesDirector": "mongo1",
+	  "moviesProducer": "mongo1",
+	  "seriesProducer": "mongo1",
+	  "episodesProducer": "mongo1",
+	  "moviesActor": "mongo1",
+	  "seriesActor": "mongo1",
+	  "episodesActor": "mongo1",
+	  "quotes": "mongo1"
+	},
+	"MovieRate": {
+	  "user": "mongo1",
+	  "movie": "mongo1",
+	  "numericRating": "mongo1",
+	  "verbalRating": "mongo1"
+	},
+	"SeriesRate": {
+	  "user": "mongo1",
+	  "series": "mongo1",
+	  "numericRating": "mongo1",
+	  "verbalRating": "mongo1"
+	},
+	"EpisodeRate": {
+	  "user": "mongo1",
+	  "episode": "mongo1",
+	  "numericRating": "mongo1",
+	  "verbalRating": "mongo1"
+	},
+	"MovieRole": {
+	  "user": "mongo1",
+	  "movie": "mongo1",
+	  "roles": "mongo1"
+	},
+	"SeriesRole": {
+	  "user": "mongo1",
+	  "series": "mongo1",
+	  "roles": "mongo1"
+	},
+	"EpisodeRole": {
+	  "user": "mongo1",
+	  "episode": "mongo1",
+	  "roles": "mongo1"
+	},
+	"Movie": {
+	  "ID": "mongo1",
+	  "releaseDate": "mongo1",
+	  "title": "mongo1",
+	  "avgRating": "mongo1",
+	  "length": "mongo1",
+	  "media": "mongo1",
+	  "income": "mongo1",
+	  "genres": "mongo1",
+	  "directors": "mongo1",
+	  "producers": "mongo1"
+	},
+	"Series": {
+	  "ID": "mongo1",
+	  "releaseDate": "mongo1",
+	  "title": "mongo1",
+	  "avgRating": "mongo1",
+	  "seasons": "mongo1",
+	  "network": "mongo1",
+	  "episodes": "mongo1",
+	  "genres": "mongo1",
+	  "directors": "mongo1",
+	  "producers": "mongo1"
+	},
+	"Episode": {
+	  "ID": "mongo1",
+	  "releaseDate": "mongo1",
+	  "title": "mongo1",
+	  "avgRating": "mongo1",
+	  "length": "mongo1",
+	  "season": "mongo1",
+	  "number": "mongo1",
+	  "genres": "mongo1",
+	  "series": "mongo1",
+	  "directors": "mongo1",
+	  "producers": "mongo1"
+	},
+	"Genre": {
+	  "name": "mongo1",
+	  "movies": "mongo1",
+	  "series": "mongo1",
+	  "episodes": "mongo1"
+	},
+	"Quote": {
+	  "ID": "mongo1",
+	  "text": "mongo1",
+	  "participants": "mongo1"
+	},
+	"Goof": {
+	  "ID": "mongo1",
+	  "text": "mongo1",
+	  "type": "mongo1"
+	},
+	"Trivia": {
+	  "ID": "mongo1",
+	  "text": "mongo1"
+	}
+  }
+}
