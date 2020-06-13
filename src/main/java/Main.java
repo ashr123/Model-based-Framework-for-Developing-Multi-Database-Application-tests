@@ -15,7 +15,9 @@ public class Main
 {
 	public static void main(String... args) throws IOException
 	{
-		Reader.loadConfAndSchema("src/main/resources/configs/configuration.json", "src/main/resources/schemas/schema.json");
+		Reader.loadConfAndSchema("src/main/resources/configs/configuration.json",
+				"src/main/resources/schemas/schema.json",
+				true);
 
 		try (MongoClient mongoClient = MongoClients.create())
 		{
