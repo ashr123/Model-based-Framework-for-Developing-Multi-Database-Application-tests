@@ -154,7 +154,7 @@ public class Main
 				.putField("length", 45)
 				.putField("season", 1)
 				.putField("number", 1)
-				.putField("series", Set.of(series));
+				.putField("series", series);
 
 		Entity episode2 = Entity.of("Episode")
 				.putField("ID", "9999")
@@ -164,7 +164,7 @@ public class Main
 				.putField("length", 45)
 				.putField("season", 1)
 				.putField("number", 2)
-				.putField("series", Set.of(series));
+				.putField("series", series);
 
 		Entity episode3 = Entity.of("Episode")
 				.putField("ID", "9999")
@@ -174,7 +174,7 @@ public class Main
 				.putField("length", 45)
 				.putField("season", 1)
 				.putField("number", 3)
-				.putField("series", Set.of(series));
+				.putField("series", series);
 
 		Entity episode4 = Entity.of("Episode")
 				.putField("ID", "9999")
@@ -184,7 +184,7 @@ public class Main
 				.putField("length", 45)
 				.putField("season", 1)
 				.putField("number", 4)
-				.putField("series", Set.of(series));
+				.putField("series", series);
 
 		Entity episode5 = Entity.of("Episode")
 				.putField("ID", "9999")
@@ -194,7 +194,7 @@ public class Main
 				.putField("length", 45)
 				.putField("season", 1)
 				.putField("number", 5)
-				.putField("series", Set.of(series));
+				.putField("series", series);
 
 		Set<Entity> episodes = Set.of(episode1, episode2, episode3, episode4, episode5);
 
@@ -460,12 +460,46 @@ public class Main
 				.putField("episode", episode5)
 				.putField("roles", Set.of("Actor"));
 
+		Entity movieRating1 = Entity.of("MovieRate")
+				.putField("user", actor1)
+				.putField("movie", movie)
+				.putField("numericRating",10)
+				.putField("verbalRating","Great !");
+
+		Entity movieRating2 = Entity.of("MovieRate")
+				.putField("user", actor2)
+				.putField("movie", movie)
+				.putField("numericRating",10)
+				.putField("verbalRating","Great !");
+
+		Entity movieRating3 = Entity.of("MovieRate")
+				.putField("user", actor3)
+				.putField("movie", movie)
+				.putField("numericRating",10)
+				.putField("verbalRating","Great !");
+
+		Entity movieRating4 = Entity.of("MovieRate")
+				.putField("user", actor4)
+				.putField("movie", movie)
+				.putField("numericRating",10)
+				.putField("verbalRating","Great !");
+
+		Entity movieRating5 = Entity.of("MovieRate")
+				.putField("user", actor5)
+				.putField("movie", movie)
+				.putField("numericRating",10)
+				.putField("verbalRating","Great !");
+
+		Entity movieRating6 = Entity.of("MovieRate")
+				.putField("user", actor6)
+				.putField("movie", movie)
+				.putField("numericRating",10)
+				.putField("verbalRating","Great !");
+
+		Set<Entity> ratings = Set.of(movieRating1, movieRating2, movieRating3, movieRating4, movieRating5, movieRating6);
+
 		create(series);
-		create(episodes);
-		create(directors);
-		create(producers);
-		create(actor4, actor5, actor6);
-		create(genres);
+		create(ratings);
 		create(actorSeriesRole4, actorSeriesRole5, actorSeriesRole6,
 				actorEpisodeRole41,
 				actorEpisodeRole42,
@@ -482,9 +516,6 @@ public class Main
 				actorEpisodeRole63,
 				actorEpisodeRole64,
 				actorEpisodeRole65);
-
-		//		System.out.println(result);
-		System.out.println(Reader.toJson(result));
 
 //		Date dateofbirth = new Date((Long) result.get("dateofbirth"));
 //		System.out.println(dateofbirth);
