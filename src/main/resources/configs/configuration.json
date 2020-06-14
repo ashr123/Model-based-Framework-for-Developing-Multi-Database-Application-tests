@@ -39,7 +39,7 @@
 	  "lastLogin": "mongo1",
 	  "ID": "mongo1",
 	  "name": "mongo1",
-	  "dateofbirth": "mongo1",
+	  "dateOfBirth": "mongo1",
 	  "gender": "mongo1",
 	  "moviesDirector": "mongo1",
 	  "seriesDirector": "mongo1",

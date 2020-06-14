@@ -5,11 +5,14 @@ import dataLayer.readers.Reader;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Stream;
 
-import static dataLayer.crud.Query.create;
-import static dataLayer.crud.Query.read;
+import static dataLayer.crud.Query.*;
+import static dataLayer.crud.filters.All.all;
 import static dataLayer.crud.filters.Eq.eq;
+import static java.util.stream.Collectors.toSet;
 
 public class Main
 {
@@ -25,8 +28,8 @@ public class Main
 			mongoClient.getDatabase("myDB").drop();
 		}
 
-		Calendar calendar = Calendar.getInstance();
-		Calendar calendar2 = Calendar.getInstance();
+		final Calendar calendar = Calendar.getInstance();
+		final Calendar calendar2 = Calendar.getInstance();
 		calendar.set(1999, Calendar.MAY, 16);
 		Entity movie = Entity.of("Movie")
 				.putField("ID", "111111")
@@ -46,7 +49,7 @@ public class Main
 				.putField("lastLogin", calendar2.getTimeInMillis())
 				.putField("ID", 121212)
 				.putField("name", "George Lucas")
-				.putField("dateofbirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTimeInMillis())
 				.putField("gender", true)
 				.putField("moviesDirector", Set.of(movie));
 
@@ -59,7 +62,7 @@ public class Main
 				.putField("lastLogin", calendar2.getTimeInMillis())
 				.putField("ID", 131313)
 				.putField("name", "Richard McCallum")
-				.putField("dateofbirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTimeInMillis())
 				.putField("gender", true)
 				.putField("moviesProducer", Set.of(movie));
 
@@ -72,7 +75,7 @@ public class Main
 				.putField("lastLogin", calendar2.getTimeInMillis())
 				.putField("ID", 141414)
 				.putField("name", "Jake Lloyd")
-				.putField("dateofbirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTimeInMillis())
 				.putField("gender", true)
 				.putField("moviesActor", Set.of(movie));
 
@@ -85,7 +88,7 @@ public class Main
 				.putField("lastLogin", calendar2.getTimeInMillis())
 				.putField("ID", 151515)
 				.putField("name", "Frank Oz")
-				.putField("dateofbirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTimeInMillis())
 				.putField("gender", true)
 				.putField("moviesActor", Set.of(movie));
 
@@ -98,7 +101,7 @@ public class Main
 				.putField("lastLogin", calendar2.getTimeInMillis())
 				.putField("ID", 161616)
 				.putField("name", "Ian McDiarmid")
-				.putField("dateofbirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTimeInMillis())
 				.putField("gender", true)
 				.putField("moviesActor", Set.of(movie));
 
@@ -131,18 +134,11 @@ public class Main
 				.putField("movie", movie)
 				.putField("roles", Set.of("Sheev Palpatine"));
 
-		create(movie, director, producer, actor1, actor2, actor3, genre1, genre2, role1, role2, role3);
-
-		//noinspection OptionalGetWithoutIsPresent
-		Entity result = read(eq("User", "ID", 121212)).stream()
-				.findFirst()
-				.get();
-
 		Entity series = Entity.of("Series")
 				.putField("ID", "9999")
 				.putField("releaseDate", calendar.getTimeInMillis())
 				.putField("title", "How I Met Your Mother")
-				.putField("avgRating", 5.0)
+				.putField("avgRating", 1.0)
 				.putField("seasons", 8)
 				.putField("network", "Don't know");
 
@@ -150,7 +146,7 @@ public class Main
 				.putField("ID", "9999")
 				.putField("releaseDate", calendar.getTimeInMillis())
 				.putField("title", "How I Met Your Mother")
-				.putField("avgRating", 5.0)
+				.putField("avgRating", 2.0)
 				.putField("length", 45)
 				.putField("season", 1)
 				.putField("number", 1)
@@ -160,7 +156,7 @@ public class Main
 				.putField("ID", "9999")
 				.putField("releaseDate", calendar.getTimeInMillis())
 				.putField("title", "How I Met Your Mother")
-				.putField("avgRating", 5.0)
+				.putField("avgRating", 3.0)
 				.putField("length", 45)
 				.putField("season", 1)
 				.putField("number", 2)
@@ -170,7 +166,7 @@ public class Main
 				.putField("ID", "9999")
 				.putField("releaseDate", calendar.getTimeInMillis())
 				.putField("title", "How I Met Your Mother")
-				.putField("avgRating", 5.0)
+				.putField("avgRating", 4.0)
 				.putField("length", 45)
 				.putField("season", 1)
 				.putField("number", 3)
@@ -190,7 +186,7 @@ public class Main
 				.putField("ID", "9999")
 				.putField("releaseDate", calendar.getTimeInMillis())
 				.putField("title", "How I Met Your Mother")
-				.putField("avgRating", 5.0)
+				.putField("avgRating", 6.0)
 				.putField("length", 45)
 				.putField("season", 1)
 				.putField("number", 5)
@@ -209,7 +205,7 @@ public class Main
 				.putField("lastLogin", calendar2.getTimeInMillis())
 				.putField("ID", 10)
 				.putField("name", "director1")
-				.putField("dateofbirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTimeInMillis())
 				.putField("gender", true)
 				.putField("seriesDirector", Set.of(series))
 				.putField("episodesDirector", episodes);
@@ -223,7 +219,7 @@ public class Main
 				.putField("lastLogin", calendar2.getTimeInMillis())
 				.putField("ID", 11)
 				.putField("name", "director2")
-				.putField("dateofbirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTimeInMillis())
 				.putField("gender", true)
 				.putField("seriesDirector", Set.of(series))
 				.putField("episodesDirector", episodes);
@@ -237,7 +233,7 @@ public class Main
 				.putField("lastLogin", calendar2.getTimeInMillis())
 				.putField("ID", 12)
 				.putField("name", "director3")
-				.putField("dateofbirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTimeInMillis())
 				.putField("gender", true)
 				.putField("seriesDirector", Set.of(series))
 				.putField("episodesDirector", episodes);
@@ -251,7 +247,7 @@ public class Main
 				.putField("lastLogin", calendar2.getTimeInMillis())
 				.putField("ID", 13)
 				.putField("name", "producer1")
-				.putField("dateofbirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTimeInMillis())
 				.putField("gender", true)
 				.putField("seriesProducer", Set.of(series))
 				.putField("episodesProducer", episodes);
@@ -265,7 +261,7 @@ public class Main
 				.putField("lastLogin", calendar2.getTimeInMillis())
 				.putField("ID", 14)
 				.putField("name", "producer2")
-				.putField("dateofbirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTimeInMillis())
 				.putField("gender", true)
 				.putField("seriesProducer", Set.of(series))
 				.putField("episodesProducer", episodes);
@@ -279,7 +275,7 @@ public class Main
 				.putField("lastLogin", calendar2.getTimeInMillis())
 				.putField("ID", 15)
 				.putField("name", "producer3")
-				.putField("dateofbirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTimeInMillis())
 				.putField("gender", true)
 				.putField("seriesProducer", Set.of(series))
 				.putField("episodesProducer", episodes);
@@ -293,7 +289,7 @@ public class Main
 				.putField("lastLogin", calendar2.getTimeInMillis())
 				.putField("ID", 16)
 				.putField("name", "actor4")
-				.putField("dateofbirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTimeInMillis())
 				.putField("gender", true)
 				.putField("seriesActor", Set.of(series))
 				.putField("episodesActor", episodes);
@@ -307,7 +303,7 @@ public class Main
 				.putField("lastLogin", calendar2.getTimeInMillis())
 				.putField("ID", 17)
 				.putField("name", "actor5")
-				.putField("dateofbirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTimeInMillis())
 				.putField("gender", true)
 				.putField("seriesActor", Set.of(series))
 				.putField("episodesActor", episodes);
@@ -321,7 +317,7 @@ public class Main
 				.putField("lastLogin", calendar2.getTimeInMillis())
 				.putField("ID", 18)
 				.putField("name", "actor6")
-				.putField("dateofbirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTimeInMillis())
 				.putField("gender", true)
 				.putField("seriesActor", Set.of(series))
 				.putField("episodesActor", episodes);
@@ -330,22 +326,22 @@ public class Main
 		Set<Entity> producers = Set.of(producer1, producer2, producer3);
 
 		series.putField("directors", directors)
-			.putField("producers",producers);
+				.putField("producers", producers);
 
-		episode1.putField("directors",directors)
-				.putField("producers",producers);
+		episode1.putField("directors", directors)
+				.putField("producers", producers);
 
-		episode2.putField("directors",directors)
-				.putField("producers",producers);
+		episode2.putField("directors", directors)
+				.putField("producers", producers);
 
-		episode3.putField("directors",directors)
-				.putField("producers",producers);
+		episode3.putField("directors", directors)
+				.putField("producers", producers);
 
-		episode4.putField("directors",directors)
-				.putField("producers",producers);
+		episode4.putField("directors", directors)
+				.putField("producers", producers);
 
-		episode5.putField("directors",directors)
-				.putField("producers",producers);
+		episode5.putField("directors", directors)
+				.putField("producers", producers);
 
 		Entity genre3 = Entity.of("Genre")
 				.putField("name", "genre3")
@@ -378,7 +374,7 @@ public class Main
 		Entity actorSeriesRole5 = Entity.of("SeriesRole")
 				.putField("user", actor5)
 				.putField("series", series)
-				.putField("roles", Set.of("Actor"));;
+				.putField("roles", Set.of("Actor"));
 
 		Entity actorSeriesRole6 = Entity.of("SeriesRole")
 				.putField("user", actor6)
@@ -463,44 +459,60 @@ public class Main
 		Entity movieRating1 = Entity.of("MovieRate")
 				.putField("user", actor1)
 				.putField("movie", movie)
-				.putField("numericRating",10)
-				.putField("verbalRating","Great !");
+				.putField("numericRating", 10)
+				.putField("verbalRating", "Great !");
 
 		Entity movieRating2 = Entity.of("MovieRate")
 				.putField("user", actor2)
 				.putField("movie", movie)
-				.putField("numericRating",10)
-				.putField("verbalRating","Great !");
+				.putField("numericRating", 10)
+				.putField("verbalRating", "Great !");
 
 		Entity movieRating3 = Entity.of("MovieRate")
 				.putField("user", actor3)
 				.putField("movie", movie)
-				.putField("numericRating",10)
-				.putField("verbalRating","Great !");
+				.putField("numericRating", 10)
+				.putField("verbalRating", "Great !");
 
 		Entity movieRating4 = Entity.of("MovieRate")
 				.putField("user", actor4)
 				.putField("movie", movie)
-				.putField("numericRating",10)
-				.putField("verbalRating","Great !");
+				.putField("numericRating", 10)
+				.putField("verbalRating", "Great !");
 
 		Entity movieRating5 = Entity.of("MovieRate")
 				.putField("user", actor5)
 				.putField("movie", movie)
-				.putField("numericRating",10)
-				.putField("verbalRating","Great !");
+				.putField("numericRating", 10)
+				.putField("verbalRating", "Great !");
 
 		Entity movieRating6 = Entity.of("MovieRate")
 				.putField("user", actor6)
 				.putField("movie", movie)
-				.putField("numericRating",10)
-				.putField("verbalRating","Great !");
+				.putField("numericRating", 10)
+				.putField("verbalRating", "Great !");
 
-		Set<Entity> ratings = Set.of(movieRating1, movieRating2, movieRating3, movieRating4, movieRating5, movieRating6);
-
-		create(series);
-		create(ratings);
-		create(actorSeriesRole4, actorSeriesRole5, actorSeriesRole6,
+		create(movie,
+				director,
+				producer,
+				actor1,
+				actor2,
+				actor3,
+				genre1,
+				genre2,
+				role1,
+				role2,
+				role3,
+				series,
+				movieRating1,
+				movieRating2,
+				movieRating3,
+				movieRating4,
+				movieRating5,
+				movieRating6,
+				actorSeriesRole4,
+				actorSeriesRole5,
+				actorSeriesRole6,
 				actorEpisodeRole41,
 				actorEpisodeRole42,
 				actorEpisodeRole43,
@@ -517,7 +529,21 @@ public class Main
 				actorEpisodeRole64,
 				actorEpisodeRole65);
 
-//		Date dateofbirth = new Date((Long) result.get("dateofbirth"));
-//		System.out.println(dateofbirth);
+		Set<Entity>
+				res = Stream.of(read(all("Movie")),
+				read(all("Series")),
+				read(all("Episode")))
+				.flatMap(Collection::stream)
+				.sorted((entity1, entity2) -> ((Double) entity2.get("avgRating")).compareTo((Double) entity1.get("avgRating")))
+				.limit(5)
+				.collect(toSet()),
+//				res2 = read(all("MovieRate")).stream()
+//						.filter(entity -> ((Entity) entity.get("movie")).get("title").equals("Star Wars: Episode I – The Phantom Menace"))
+//						.map(entity -> (Entity) entity.get("user"))
+//						.collect(toSet()),
+				res3 = read(eq("MovieRate", "movie",
+						simpleRead(eq("Movie", "title", "Star Wars: Episode I – The Phantom Menace")).findFirst().get())).stream()
+						.map(entity -> (Entity) entity.get("user"))
+						.collect(toSet());
 	}
 }
