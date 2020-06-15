@@ -47,7 +47,7 @@ public class Main
 
 		dropTheBase();
 
-		upTheBasemMultiDB();
+		upTheBaseMultiDB();
 
 		createEnvironment();
 
@@ -55,6 +55,7 @@ public class Main
 				top5WatchedItems = getTop5WatchedItems(),
 				usersThatRatedStarWars = getUsersThatRatedTheMovie("Star Wars: Episode I – The Phantom Menace");
 		System.out.println(usersThatRatedStarWars);
+		System.out.println(Reader.toJson(usersThatRatedStarWars));
 	}
 
 	private static Set<Entity> getTop5WatchedItems()
@@ -639,7 +640,7 @@ public class Main
 		}
 	}
 
-	private static void upTheBasemMultiDB()
+	private static void upTheBaseMultiDB()
 	{
 		try (DSLContext connection = using("jdbc:sqlite:src/main/resources/sqliteDB/test.db"))
 		{
