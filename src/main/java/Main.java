@@ -28,13 +28,13 @@ public class Main
 {
 	public static void main(String... args) throws IOException
 	{
-		Reader.loadConfAndSchema("src/main/resources/configs/mongoDBConfiguration.json",
+		Reader.loadConfAndSchema("src/main/resources/configs/multiDBConfiguration.json",
 				"src/main/resources/schemas/schema.json",
 				true);
 
 		dropTheBase();
 
-		upTheBaseSqlDB();
+		upTheBasemMultiDB();
 
 		createEnvironment();
 
@@ -648,9 +648,7 @@ public class Main
 					.column("seriesActor", SQLDataType.BLOB)
 					.column("episodesActor", SQLDataType.BLOB)
 					.column("quotes", SQLDataType.BLOB)
-					.constraint(primaryKey("uuid"))
-					.constraint(primaryKey("username"))
-					.constraint(primaryKey("ID"))
+					.constraint(primaryKey("uuid","username","ID"))
 					.execute();
 		}
 	}
