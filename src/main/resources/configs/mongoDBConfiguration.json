@@ -24,11 +24,7 @@
 	},
 	"sql1": {
 	  "type": "sql",
-	  "connStr": "jdbc:sqlite:src/test/resources/sqliteDBs/test.db"
-	},
-	"sql2": {
-	  "type": "sql",
-	  "connStr": "jdbc:sqlite:src/test/resources/sqliteDBs/test2.db"
+	  "connStr": "jdbc:sqlite:src/main/resources/sqliteDB/test.db"
 	}
   },
   "entities": {

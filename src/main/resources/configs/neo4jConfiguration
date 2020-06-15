@@ -1,0 +1,142 @@
+{
+  "fieldsMappings": {
+	"neo1": {
+	  "type": "neo4j",
+	  "connStr": "bolt://localhost:7687",
+	  "username": "neo4j",
+	  "password": "neo4j1"
+	},
+	"neo2": {
+	  "type": "neo4j",
+	  "connStr": "bolt://localhost:11008",
+	  "username": "neo4j",
+	  "password": "neo4j1"
+	},
+	"mongo1": {
+	  "type": "mongodb",
+	  "connStr": "mongodb://localhost",
+	  "location": "myDB"
+	},
+	"mongo2": {
+	  "type": "mongodb",
+	  "connStr": "mongodb://localhost",
+	  "location": "TestDB"
+	},
+	"sql1": {
+	  "type": "sql",
+	  "connStr": "jdbc:sqlite:src/main/resources/sqliteDB/test.db"
+	}
+  },
+  "entities": {
+	"User": {
+	  "username": "neo1",
+	  "password": "neo1",
+	  "email": "neo1",
+	  "lastLogin": "neo1",
+	  "ID": "neo1",
+	  "name": "neo1",
+	  "dateOfBirth": "neo1",
+	  "gender": "neo1",
+	  "moviesDirector": "neo1",
+	  "seriesDirector": "neo1",
+	  "episodesDirector": "neo1",
+	  "moviesProducer": "neo1",
+	  "seriesProducer": "neo1",
+	  "episodesProducer": "neo1",
+	  "moviesActor": "neo1",
+	  "seriesActor": "neo1",
+	  "episodesActor": "neo1",
+	  "quotes": "neo1"
+	},
+	"MovieRate": {
+	  "user": "neo1",
+	  "movie": "neo1",
+	  "numericRating": "neo1",
+	  "verbalRating": "neo1"
+	},
+	"SeriesRate": {
+	  "user": "neo1",
+	  "series": "neo1",
+	  "numericRating": "neo1",
+	  "verbalRating": "neo1"
+	},
+	"EpisodeRate": {
+	  "user": "neo1",
+	  "episode": "neo1",
+	  "numericRating": "neo1",
+	  "verbalRating": "neo1"
+	},
+	"MovieRole": {
+	  "user": "neo1",
+	  "movie": "neo1",
+	  "roles": "neo1"
+	},
+	"SeriesRole": {
+	  "user": "neo1",
+	  "series": "neo1",
+	  "roles": "neo1"
+	},
+	"EpisodeRole": {
+	  "user": "neo1",
+	  "episode": "neo1",
+	  "roles": "neo1"
+	},
+	"Movie": {
+	  "ID": "neo1",
+	  "releaseDate": "neo1",
+	  "title": "neo1",
+	  "avgRating": "neo1",
+	  "length": "neo1",
+	  "media": "neo1",
+	  "income": "neo1",
+	  "genres": "neo1",
+	  "directors": "neo1",
+	  "producers": "neo1"
+	},
+	"Series": {
+	  "ID": "neo1",
+	  "releaseDate": "neo1",
+	  "title": "neo1",
+	  "avgRating": "neo1",
+	  "seasons": "neo1",
+	  "network": "neo1",
+	  "episodes": "neo1",
+	  "genres": "neo1",
+	  "directors": "neo1",
+	  "producers": "neo1"
+	},
+	"Episode": {
+	  "ID": "neo1",
+	  "releaseDate": "neo1",
+	  "title": "neo1",
+	  "avgRating": "neo1",
+	  "length": "neo1",
+	  "season": "neo1",
+	  "number": "neo1",
+	  "genres": "neo1",
+	  "series": "neo1",
+	  "directors": "neo1",
+	  "producers": "neo1"
+	},
+	"Genre": {
+	  "name": "neo1",
+	  "movies": "neo1",
+	  "series": "neo1",
+	  "episodes": "neo1"
+	},
+	"Quote": {
+	  "ID": "neo1",
+	  "text": "neo1",
+	  "participants": "neo1"
+	},
+	"Goof": {
+	  "ID": "neo1",
+	  "text": "neo1",
+	  "type": "neo1"
+	},
+	"Trivia": {
+	  "ID": "neo1",
+	  "text": "neo1"
+	}
+  }
+}

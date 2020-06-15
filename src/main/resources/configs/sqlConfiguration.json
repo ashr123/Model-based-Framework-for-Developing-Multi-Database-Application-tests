@@ -1,0 +1,142 @@
+{
+  "fieldsMappings": {
+	"neo1": {
+	  "type": "neo4j",
+	  "connStr": "bolt://localhost:7687",
+	  "username": "neo4j",
+	  "password": "neo4j1"
+	},
+	"neo2": {
+	  "type": "neo4j",
+	  "connStr": "bolt://localhost:11008",
+	  "username": "neo4j",
+	  "password": "neo4j1"
+	},
+	"mongo1": {
+	  "type": "mongodb",
+	  "connStr": "mongodb://localhost",
+	  "location": "myDB"
+	},
+	"mongo2": {
+	  "type": "mongodb",
+	  "connStr": "mongodb://localhost",
+	  "location": "TestDB"
+	},
+	"sql1": {
+	  "type": "sql",
+	  "connStr": "jdbc:sqlite:src/main/resources/sqliteDB/test.db"
+	}
+  },
+  "entities": {
+	"User": {
+	  "username": "sql1",
+	  "password": "sql1",
+	  "email": "sql1",
+	  "lastLogin": "sql1",
+	  "ID": "sql1",
+	  "name": "sql1",
+	  "dateOfBirth": "sql1",
+	  "gender": "sql1",
+	  "moviesDirector": "sql1",
+	  "seriesDirector": "sql1",
+	  "episodesDirector": "sql1",
+	  "moviesProducer": "sql1",
+	  "seriesProducer": "sql1",
+	  "episodesProducer": "sql1",
+	  "moviesActor": "sql1",
+	  "seriesActor": "sql1",
+	  "episodesActor": "sql1",
+	  "quotes": "sql1"
+	},
+	"MovieRate": {
+	  "user": "sql1",
+	  "movie": "sql1",
+	  "numericRating": "sql1",
+	  "verbalRating": "sql1"
+	},
+	"SeriesRate": {
+	  "user": "sql1",
+	  "series": "sql1",
+	  "numericRating": "sql1",
+	  "verbalRating": "sql1"
+	},
+	"EpisodeRate": {
+	  "user": "sql1",
+	  "episode": "sql1",
+	  "numericRating": "sql1",
+	  "verbalRating": "sql1"
+	},
+	"MovieRole": {
+	  "user": "sql1",
+	  "movie": "sql1",
+	  "roles": "sql1"
+	},
+	"SeriesRole": {
+	  "user": "sql1",
+	  "series": "sql1",
+	  "roles": "sql1"
+	},
+	"EpisodeRole": {
+	  "user": "sql1",
+	  "episode": "sql1",
+	  "roles": "sql1"
+	},
+	"Movie": {
+	  "ID": "sql1",
+	  "releaseDate": "sql1",
+	  "title": "sql1",
+	  "avgRating": "sql1",
+	  "length": "sql1",
+	  "media": "sql1",
+	  "income": "sql1",
+	  "genres": "sql1",
+	  "directors": "sql1",
+	  "producers": "sql1"
+	},
+	"Series": {
+	  "ID": "sql1",
+	  "releaseDate": "sql1",
+	  "title": "sql1",
+	  "avgRating": "sql1",
+	  "seasons": "sql1",
+	  "network": "sql1",
+	  "episodes": "sql1",
+	  "genres": "sql1",
+	  "directors": "sql1",
+	  "producers": "sql1"
+	},
+	"Episode": {
+	  "ID": "sql1",
+	  "releaseDate": "sql1",
+	  "title": "sql1",
+	  "avgRating": "sql1",
+	  "length": "sql1",
+	  "season": "sql1",
+	  "number": "sql1",
+	  "genres": "sql1",
+	  "series": "sql1",
+	  "directors": "sql1",
+	  "producers": "sql1"
+	},
+	"Genre": {
+	  "name": "sql1",
+	  "movies": "sql1",
+	  "series": "sql1",
+	  "episodes": "sql1"
+	},
+	"Quote": {
+	  "ID": "sql1",
+	  "text": "sql1",
+	  "participants": "sql1"
+	},
+	"Goof": {
+	  "ID": "sql1",
+	  "text": "sql1",
+	  "type": "sql1"
+	},
+	"Trivia": {
+	  "ID": "sql1",
+	  "text": "sql1"
+	}
+  }
+}

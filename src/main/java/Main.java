@@ -2,10 +2,18 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import dataLayer.crud.Entity;
 import dataLayer.readers.Reader;
+import iot.jcypher.database.DBAccessFactory;
+import iot.jcypher.database.DBProperties;
+import iot.jcypher.database.DBType;
+import iot.jcypher.database.IDBAccess;
+import org.jooq.DSLContext;
+import org.jooq.impl.SQLDataType;
+import org.neo4j.driver.v1.AuthTokens;
 
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -13,16 +21,20 @@ import static dataLayer.crud.Query.*;
 import static dataLayer.crud.filters.All.all;
 import static dataLayer.crud.filters.Eq.eq;
 import static java.util.stream.Collectors.toSet;
+import static org.jooq.impl.DSL.primaryKey;
+import static org.jooq.impl.DSL.using;
 
 public class Main
 {
 	public static void main(String... args) throws IOException
 	{
-		Reader.loadConfAndSchema("src/main/resources/configs/configuration.json",
+		Reader.loadConfAndSchema("src/main/resources/configs/mongoDBConfiguration.json",
 				"src/main/resources/schemas/schema.json",
 				true);
 
 		dropTheBase();
+
+		upTheBaseSqlDB();
 
 		createEnvironment();
 
@@ -560,10 +572,230 @@ public class Main
 
 	private static void dropTheBase()
 	{
+		//Dropping all MongoDB databases.
 		try (MongoClient mongoClient = MongoClients.create())
 		{
 			mongoClient.getDatabase("TestDB").drop();
 			mongoClient.getDatabase("myDB").drop();
+		}
+
+		//Dropping all Neo4j databases.
+		Properties props = new Properties();
+		props.setProperty(DBProperties.SERVER_ROOT_URI, "bolt://localhost:7687");
+		IDBAccess dbAccess = DBAccessFactory.createDBAccess(iot.jcypher.database.DBType.REMOTE, props, AuthTokens.basic("neo4j", "neo4j1"));
+		try
+		{
+			dbAccess.clearDatabase();
+		}
+		finally
+		{
+			dbAccess.close();
+		}
+
+		props = new Properties();
+		props.setProperty(DBProperties.SERVER_ROOT_URI, "bolt://localhost:11008");
+		dbAccess = DBAccessFactory.createDBAccess(DBType.REMOTE, props, AuthTokens.basic("neo4j", "neo4j1"));
+		try
+		{
+			dbAccess.clearDatabase();
+		}
+		finally
+		{
+			dbAccess.close();
+		}
+
+		//Dropping all SQL databases.
+		try (DSLContext connection = using("jdbc:sqlite:src/main/resources/sqliteDB/test.db"))
+		{
+			connection.dropTableIfExists("User").execute();
+			connection.dropTableIfExists("MovieRate").execute();
+			connection.dropTableIfExists("SeriesRate").execute();
+			connection.dropTableIfExists("EpisodeRate").execute();
+			connection.dropTableIfExists("MovieRole").execute();
+			connection.dropTableIfExists("SeriesRole").execute();
+			connection.dropTableIfExists("EpisodeRole").execute();
+			connection.dropTableIfExists("Movie").execute();
+			connection.dropTableIfExists("Series").execute();
+			connection.dropTableIfExists("Episode").execute();
+			connection.dropTableIfExists("Genre").execute();
+			connection.dropTableIfExists("Quote").execute();
+			connection.dropTableIfExists("Goof").execute();
+			connection.dropTableIfExists("Trivia").execute();
+
+		}
+	}
+
+	private static void upTheBasemMultiDB(){
+		try (DSLContext connection = using("jdbc:sqlite:src/main/resources/sqliteDB/test.db"))
+		{
+			connection.createTableIfNotExists("User")
+					.column("uuid", SQLDataType.UUID.nullable(false))
+					.column("username", SQLDataType.VARCHAR)
+					.column("password", SQLDataType.VARCHAR)
+					.column("email", SQLDataType.VARCHAR)
+					.column("lastLogin", SQLDataType.BIGINT)
+					.column("ID", SQLDataType.BIGINT)
+					.column("name", SQLDataType.VARCHAR)
+					.column("dateOfBirth", SQLDataType.BIGINT)
+					.column("gender", SQLDataType.BOOLEAN)
+					.column("moviesDirector", SQLDataType.BLOB)
+					.column("seriesDirector", SQLDataType.BLOB)
+					.column("episodesDirector", SQLDataType.BLOB)
+					.column("moviesProducer", SQLDataType.BLOB)
+					.column("seriesProducer", SQLDataType.BLOB)
+					.column("episodesProducer", SQLDataType.BLOB)
+					.column("moviesActor", SQLDataType.BLOB)
+					.column("seriesActor", SQLDataType.BLOB)
+					.column("episodesActor", SQLDataType.BLOB)
+					.column("quotes", SQLDataType.BLOB)
+					.constraint(primaryKey("uuid"))
+					.constraint(primaryKey("username"))
+					.constraint(primaryKey("ID"))
+					.execute();
+		}
+	}
+
+	private static void upTheBaseSqlDB(){
+		try (DSLContext connection = using("jdbc:sqlite:src/main/resources/sqliteDB/test.db"))
+		{
+			connection.createTableIfNotExists("User")
+					.column("uuid", SQLDataType.UUID.nullable(false))
+					.column("username", SQLDataType.VARCHAR)
+					.column("password", SQLDataType.VARCHAR)
+					.column("email", SQLDataType.VARCHAR)
+					.column("lastLogin", SQLDataType.BIGINT)
+					.column("ID", SQLDataType.BIGINT)
+					.column("name", SQLDataType.VARCHAR)
+					.column("dateOfBirth", SQLDataType.BIGINT)
+					.column("gender", SQLDataType.BOOLEAN)
+					.column("moviesDirector", SQLDataType.BLOB)
+					.column("seriesDirector", SQLDataType.BLOB)
+					.column("episodesDirector", SQLDataType.BLOB)
+					.column("moviesProducer", SQLDataType.BLOB)
+					.column("seriesProducer", SQLDataType.BLOB)
+					.column("episodesProducer", SQLDataType.BLOB)
+					.column("moviesActor", SQLDataType.BLOB)
+					.column("seriesActor", SQLDataType.BLOB)
+					.column("episodesActor", SQLDataType.BLOB)
+					.column("quotes", SQLDataType.BLOB)
+					.constraint(primaryKey("uuid","username","ID"))
+					.execute();
+			connection.createTableIfNotExists("MovieRate")
+					.column("uuid", SQLDataType.UUID.nullable(false))
+					.column("user", SQLDataType.UUID)
+					.column("movie", SQLDataType.UUID)
+					.column("numericRating", SQLDataType.BIGINT)
+					.column("verbalRating", SQLDataType.VARCHAR)
+					.constraint(primaryKey("uuid","user","movie"))
+					.execute();
+			connection.createTableIfNotExists("SeriesRate")
+					.column("uuid", SQLDataType.UUID.nullable(false))
+					.column("user", SQLDataType.UUID)
+					.column("series", SQLDataType.UUID)
+					.column("numericRating", SQLDataType.BIGINT)
+					.column("verbalRating", SQLDataType.VARCHAR)
+					.constraint(primaryKey("uuid","user","series"))
+					.execute();
+			connection.createTableIfNotExists("EpisodeRate")
+					.column("uuid", SQLDataType.UUID.nullable(false))
+					.column("user", SQLDataType.UUID)
+					.column("episode", SQLDataType.UUID)
+					.column("numericRating", SQLDataType.BIGINT)
+					.column("verbalRating", SQLDataType.VARCHAR)
+					.constraint(primaryKey("uuid","user","episode"))
+					.execute();
+			connection.createTableIfNotExists("MovieRole")
+					.column("uuid", SQLDataType.UUID.nullable(false))
+					.column("user", SQLDataType.UUID)
+					.column("movie", SQLDataType.UUID)
+					.column("roles", SQLDataType.BLOB)
+					.constraint(primaryKey("uuid","user","movie"))
+					.execute();
+			connection.createTableIfNotExists("SeriesRole")
+					.column("uuid", SQLDataType.UUID.nullable(false))
+					.column("user", SQLDataType.UUID)
+					.column("series", SQLDataType.UUID)
+					.column("roles", SQLDataType.BLOB)
+					.constraint(primaryKey("uuid","user","series"))
+					.execute();
+			connection.createTableIfNotExists("EpisodeRole")
+					.column("uuid", SQLDataType.UUID.nullable(false))
+					.column("user", SQLDataType.UUID)
+					.column("episode", SQLDataType.UUID)
+					.column("roles", SQLDataType.BLOB)
+					.constraint(primaryKey("uuid","user","episode"))
+					.execute();
+			connection.createTableIfNotExists("Movie")
+					.column("uuid", SQLDataType.UUID.nullable(false))
+					.column("ID", SQLDataType.VARCHAR)
+					.column("releaseDate", SQLDataType.BIGINT)
+					.column("title", SQLDataType.VARCHAR)
+					.column("avgRating", SQLDataType.FLOAT)
+					.column("length", SQLDataType.BIGINT)
+					.column("media", SQLDataType.VARCHAR)
+					.column("income", SQLDataType.BIGINT)
+					.column("genres", SQLDataType.BLOB)
+					.column("directors", SQLDataType.BLOB)
+					.column("producers", SQLDataType.BLOB)
+					.constraint(primaryKey("uuid","ID"))
+					.execute();
+			connection.createTableIfNotExists("Series")
+					.column("uuid", SQLDataType.UUID.nullable(false))
+					.column("ID", SQLDataType.VARCHAR)
+					.column("releaseDate", SQLDataType.BIGINT)
+					.column("title", SQLDataType.VARCHAR)
+					.column("avgRating", SQLDataType.FLOAT)
+					.column("seasons", SQLDataType.BIGINT)
+					.column("network", SQLDataType.VARCHAR)
+					.column("episodes", SQLDataType.BLOB)
+					.column("genres", SQLDataType.BLOB)
+					.column("directors", SQLDataType.BLOB)
+					.column("producers", SQLDataType.BLOB)
+					.constraint(primaryKey("uuid","ID"))
+					.execute();
+			connection.createTableIfNotExists("Episode")
+					.column("uuid", SQLDataType.UUID.nullable(false))
+					.column("ID", SQLDataType.VARCHAR)
+					.column("releaseDate", SQLDataType.BIGINT)
+					.column("title", SQLDataType.VARCHAR)
+					.column("avgRating", SQLDataType.FLOAT)
+					.column("length", SQLDataType.BIGINT)
+					.column("season", SQLDataType.BIGINT)
+					.column("number", SQLDataType.BIGINT)
+					.column("genres", SQLDataType.BLOB)
+					.column("series", SQLDataType.UUID)
+					.column("directors", SQLDataType.BLOB)
+					.column("producers", SQLDataType.BLOB)
+					.constraint(primaryKey("uuid","ID"))
+					.execute();
+			connection.createTableIfNotExists("Genre")
+					.column("uuid", SQLDataType.UUID.nullable(false))
+					.column("name", SQLDataType.VARCHAR)
+					.column("movies", SQLDataType.BLOB)
+					.column("series", SQLDataType.BLOB)
+					.column("episodes", SQLDataType.BLOB)
+					.constraint(primaryKey("uuid","name"))
+					.execute();
+			connection.createTableIfNotExists("Quote")
+					.column("uuid", SQLDataType.UUID.nullable(false))
+					.column("ID", SQLDataType.VARCHAR)
+					.column("text", SQLDataType.VARCHAR)
+					.column("participants", SQLDataType.BLOB)
+					.constraint(primaryKey("uuid","ID"))
+					.execute();
+			connection.createTableIfNotExists("Goof")
+					.column("uuid", SQLDataType.UUID.nullable(false))
+					.column("ID", SQLDataType.VARCHAR)
+					.column("text", SQLDataType.VARCHAR)
+					.column("type", SQLDataType.VARCHAR)
+					.constraint(primaryKey("uuid","ID"))
+					.execute();
+			connection.createTableIfNotExists("Trivia")
+					.column("uuid", SQLDataType.UUID.nullable(false))
+					.column("ID", SQLDataType.VARCHAR)
+					.column("text", SQLDataType.VARCHAR)
+					.constraint(primaryKey("uuid","ID"))
+					.execute();
 		}
 	}
 }
