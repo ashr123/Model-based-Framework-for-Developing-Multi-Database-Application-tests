@@ -1,6 +1,7 @@
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import dataLayer.crud.Entity;
+import dataLayer.crud.Pair;
 import dataLayer.readers.Reader;
 import iot.jcypher.database.DBAccessFactory;
 import iot.jcypher.database.DBProperties;
@@ -11,10 +12,8 @@ import org.jooq.impl.SQLDataType;
 import org.neo4j.driver.v1.AuthTokens;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static dataLayer.crud.Query.*;
@@ -28,8 +27,22 @@ public class Main
 {
 	public static void main(String... args) throws IOException
 	{
+		final Pair<Function<Object, Object>, Function<Object, Object>> serializers =
+				Pair.of(
+						longNum -> new Date((Long) longNum),
+						date -> ((Date) date).getTime());
 		Reader.loadConfAndSchema("src/main/resources/configs/multiDBConfiguration.json",
 				"src/main/resources/schemas/schema.json",
+				Map.of(
+						"Movie", Map.of(
+								"releaseDate", serializers),
+						"Series", Map.of(
+								"releaseDate", serializers),
+						"Episode", Map.of(
+								"releaseDate", serializers),
+						"User", Map.of(
+								"lastLogin", serializers,
+								"dateOfBirth", serializers)),
 				true);
 
 		dropTheBase();
@@ -41,6 +54,7 @@ public class Main
 		Set<Entity>
 				top5WatchedItems = getTop5WatchedItems(),
 				usersThatRatedStarWars = getUsersThatRatedTheMovie("Star Wars: Episode I – The Phantom Menace");
+		System.out.println(usersThatRatedStarWars);
 	}
 
 	private static Set<Entity> getTop5WatchedItems()
@@ -73,7 +87,7 @@ public class Main
 		calendar.set(1999, Calendar.MAY, 16);
 		Entity movie = Entity.of("Movie")
 				.putField("ID", "111111")
-				.putField("releaseDate", calendar.getTimeInMillis())
+				.putField("releaseDate", calendar.getTime())
 				.putField("title", "Star Wars: Episode I – The Phantom Menace")
 				.putField("avgRating", 4.5)
 				.putField("length", 210)
@@ -86,10 +100,10 @@ public class Main
 				.putField("username", "curiousGeorge")
 				.putField("password", "lucasFilms123")
 				.putField("email", "george@gmail.com")
-				.putField("lastLogin", calendar2.getTimeInMillis())
+				.putField("lastLogin", calendar2.getTime())
 				.putField("ID", 121212)
 				.putField("name", "George Lucas")
-				.putField("dateOfBirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTime())
 				.putField("gender", true)
 				.putField("moviesDirector", Set.of(movie));
 
@@ -99,10 +113,10 @@ public class Main
 				.putField("username", "richieRich")
 				.putField("password", "richard789")
 				.putField("email", "richard@gmail.com")
-				.putField("lastLogin", calendar2.getTimeInMillis())
+				.putField("lastLogin", calendar2.getTime())
 				.putField("ID", 131313)
 				.putField("name", "Richard McCallum")
-				.putField("dateOfBirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTime())
 				.putField("gender", true)
 				.putField("moviesProducer", Set.of(movie));
 
@@ -112,10 +126,10 @@ public class Main
 				.putField("username", "jakeWalker")
 				.putField("password", "jakeJ231")
 				.putField("email", "jake@gmail.com")
-				.putField("lastLogin", calendar2.getTimeInMillis())
+				.putField("lastLogin", calendar2.getTime())
 				.putField("ID", 141414)
 				.putField("name", "Jake Lloyd")
-				.putField("dateOfBirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTime())
 				.putField("gender", true)
 				.putField("moviesActor", Set.of(movie));
 
@@ -125,10 +139,10 @@ public class Main
 				.putField("username", "wizOz")
 				.putField("password", "wizardOz212")
 				.putField("email", "frank@gmail.com")
-				.putField("lastLogin", calendar2.getTimeInMillis())
+				.putField("lastLogin", calendar2.getTime())
 				.putField("ID", 151515)
 				.putField("name", "Frank Oz")
-				.putField("dateOfBirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTime())
 				.putField("gender", true)
 				.putField("moviesActor", Set.of(movie));
 
@@ -138,10 +152,10 @@ public class Main
 				.putField("username", "mcDiarmid")
 				.putField("password", "ianMac547")
 				.putField("email", "ian@gmail.com")
-				.putField("lastLogin", calendar2.getTimeInMillis())
+				.putField("lastLogin", calendar2.getTime())
 				.putField("ID", 161616)
 				.putField("name", "Ian McDiarmid")
-				.putField("dateOfBirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTime())
 				.putField("gender", true)
 				.putField("moviesActor", Set.of(movie));
 
@@ -176,7 +190,7 @@ public class Main
 
 		Entity series = Entity.of("Series")
 				.putField("ID", "9999")
-				.putField("releaseDate", calendar.getTimeInMillis())
+				.putField("releaseDate", calendar.getTime())
 				.putField("title", "How I Met Your Mother")
 				.putField("avgRating", 1.0)
 				.putField("seasons", 8)
@@ -184,7 +198,7 @@ public class Main
 
 		Entity episode1 = Entity.of("Episode")
 				.putField("ID", "9999")
-				.putField("releaseDate", calendar.getTimeInMillis())
+				.putField("releaseDate", calendar.getTime())
 				.putField("title", "How I Met Your Mother")
 				.putField("avgRating", 2.0)
 				.putField("length", 45)
@@ -194,7 +208,7 @@ public class Main
 
 		Entity episode2 = Entity.of("Episode")
 				.putField("ID", "9999")
-				.putField("releaseDate", calendar.getTimeInMillis())
+				.putField("releaseDate", calendar.getTime())
 				.putField("title", "How I Met Your Mother")
 				.putField("avgRating", 3.0)
 				.putField("length", 45)
@@ -204,7 +218,7 @@ public class Main
 
 		Entity episode3 = Entity.of("Episode")
 				.putField("ID", "9999")
-				.putField("releaseDate", calendar.getTimeInMillis())
+				.putField("releaseDate", calendar.getTime())
 				.putField("title", "How I Met Your Mother")
 				.putField("avgRating", 4.0)
 				.putField("length", 45)
@@ -214,7 +228,7 @@ public class Main
 
 		Entity episode4 = Entity.of("Episode")
 				.putField("ID", "9999")
-				.putField("releaseDate", calendar.getTimeInMillis())
+				.putField("releaseDate", calendar.getTime())
 				.putField("title", "How I Met Your Mother")
 				.putField("avgRating", 5.0)
 				.putField("length", 45)
@@ -224,7 +238,7 @@ public class Main
 
 		Entity episode5 = Entity.of("Episode")
 				.putField("ID", "9999")
-				.putField("releaseDate", calendar.getTimeInMillis())
+				.putField("releaseDate", calendar.getTime())
 				.putField("title", "How I Met Your Mother")
 				.putField("avgRating", 6.0)
 				.putField("length", 45)
@@ -242,10 +256,10 @@ public class Main
 				.putField("username", "director1")
 				.putField("password", "director123")
 				.putField("email", "director1@gmail.com")
-				.putField("lastLogin", calendar2.getTimeInMillis())
+				.putField("lastLogin", calendar2.getTime())
 				.putField("ID", 10)
 				.putField("name", "director1")
-				.putField("dateOfBirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTime())
 				.putField("gender", true)
 				.putField("seriesDirector", Set.of(series))
 				.putField("episodesDirector", episodes);
@@ -256,10 +270,10 @@ public class Main
 				.putField("username", "director2")
 				.putField("password", "director234")
 				.putField("email", "director2@gmail.com")
-				.putField("lastLogin", calendar2.getTimeInMillis())
+				.putField("lastLogin", calendar2.getTime())
 				.putField("ID", 11)
 				.putField("name", "director2")
-				.putField("dateOfBirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTime())
 				.putField("gender", true)
 				.putField("seriesDirector", Set.of(series))
 				.putField("episodesDirector", episodes);
@@ -270,10 +284,10 @@ public class Main
 				.putField("username", "director3")
 				.putField("password", "director345")
 				.putField("email", "director3@gmail.com")
-				.putField("lastLogin", calendar2.getTimeInMillis())
+				.putField("lastLogin", calendar2.getTime())
 				.putField("ID", 12)
 				.putField("name", "director3")
-				.putField("dateOfBirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTime())
 				.putField("gender", true)
 				.putField("seriesDirector", Set.of(series))
 				.putField("episodesDirector", episodes);
@@ -284,10 +298,10 @@ public class Main
 				.putField("username", "producer1")
 				.putField("password", "producer123")
 				.putField("email", "producer1@gmail.com")
-				.putField("lastLogin", calendar2.getTimeInMillis())
+				.putField("lastLogin", calendar2.getTime())
 				.putField("ID", 13)
 				.putField("name", "producer1")
-				.putField("dateOfBirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTime())
 				.putField("gender", true)
 				.putField("seriesProducer", Set.of(series))
 				.putField("episodesProducer", episodes);
@@ -298,10 +312,10 @@ public class Main
 				.putField("username", "producer2")
 				.putField("password", "producer234")
 				.putField("email", "producer2@gmail.com")
-				.putField("lastLogin", calendar2.getTimeInMillis())
+				.putField("lastLogin", calendar2.getTime())
 				.putField("ID", 14)
 				.putField("name", "producer2")
-				.putField("dateOfBirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTime())
 				.putField("gender", true)
 				.putField("seriesProducer", Set.of(series))
 				.putField("episodesProducer", episodes);
@@ -312,10 +326,10 @@ public class Main
 				.putField("username", "producer3")
 				.putField("password", "producer345")
 				.putField("email", "producer3@gmail.com")
-				.putField("lastLogin", calendar2.getTimeInMillis())
+				.putField("lastLogin", calendar2.getTime())
 				.putField("ID", 15)
 				.putField("name", "producer3")
-				.putField("dateOfBirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTime())
 				.putField("gender", true)
 				.putField("seriesProducer", Set.of(series))
 				.putField("episodesProducer", episodes);
@@ -326,10 +340,10 @@ public class Main
 				.putField("username", "actor4")
 				.putField("password", "actor456")
 				.putField("email", "actor4@gmail.com")
-				.putField("lastLogin", calendar2.getTimeInMillis())
+				.putField("lastLogin", calendar2.getTime())
 				.putField("ID", 16)
 				.putField("name", "actor4")
-				.putField("dateOfBirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTime())
 				.putField("gender", true)
 				.putField("seriesActor", Set.of(series))
 				.putField("episodesActor", episodes);
@@ -340,10 +354,10 @@ public class Main
 				.putField("username", "actor5")
 				.putField("password", "actor567")
 				.putField("email", "actor5@gmail.com")
-				.putField("lastLogin", calendar2.getTimeInMillis())
+				.putField("lastLogin", calendar2.getTime())
 				.putField("ID", 17)
 				.putField("name", "actor5")
-				.putField("dateOfBirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTime())
 				.putField("gender", true)
 				.putField("seriesActor", Set.of(series))
 				.putField("episodesActor", episodes);
@@ -354,10 +368,10 @@ public class Main
 				.putField("username", "actor6")
 				.putField("password", "actor678")
 				.putField("email", "actor6@gmail.com")
-				.putField("lastLogin", calendar2.getTimeInMillis())
+				.putField("lastLogin", calendar2.getTime())
 				.putField("ID", 18)
 				.putField("name", "actor6")
-				.putField("dateOfBirth", calendar.getTimeInMillis())
+				.putField("dateOfBirth", calendar.getTime())
 				.putField("gender", true)
 				.putField("seriesActor", Set.of(series))
 				.putField("episodesActor", episodes);
@@ -625,7 +639,8 @@ public class Main
 		}
 	}
 
-	private static void upTheBasemMultiDB(){
+	private static void upTheBasemMultiDB()
+	{
 		try (DSLContext connection = using("jdbc:sqlite:src/main/resources/sqliteDB/test.db"))
 		{
 			connection.createTableIfNotExists("User")
@@ -648,12 +663,13 @@ public class Main
 					.column("seriesActor", SQLDataType.BLOB)
 					.column("episodesActor", SQLDataType.BLOB)
 					.column("quotes", SQLDataType.BLOB)
-					.constraint(primaryKey("uuid","username","ID"))
+					.constraint(primaryKey("uuid", "username", "ID"))
 					.execute();
 		}
 	}
 
-	private static void upTheBaseSqlDB(){
+	private static void upTheBaseSqlDB()
+	{
 		try (DSLContext connection = using("jdbc:sqlite:src/main/resources/sqliteDB/test.db"))
 		{
 			connection.createTableIfNotExists("User")
@@ -676,7 +692,7 @@ public class Main
 					.column("seriesActor", SQLDataType.BLOB)
 					.column("episodesActor", SQLDataType.BLOB)
 					.column("quotes", SQLDataType.BLOB)
-					.constraint(primaryKey("uuid","username","ID"))
+					.constraint(primaryKey("uuid", "username", "ID"))
 					.execute();
 			connection.createTableIfNotExists("MovieRate")
 					.column("uuid", SQLDataType.UUID.nullable(false))
@@ -684,7 +700,7 @@ public class Main
 					.column("movie", SQLDataType.UUID)
 					.column("numericRating", SQLDataType.BIGINT)
 					.column("verbalRating", SQLDataType.VARCHAR)
-					.constraint(primaryKey("uuid","user","movie"))
+					.constraint(primaryKey("uuid", "user", "movie"))
 					.execute();
 			connection.createTableIfNotExists("SeriesRate")
 					.column("uuid", SQLDataType.UUID.nullable(false))
@@ -692,7 +708,7 @@ public class Main
 					.column("series", SQLDataType.UUID)
 					.column("numericRating", SQLDataType.BIGINT)
 					.column("verbalRating", SQLDataType.VARCHAR)
-					.constraint(primaryKey("uuid","user","series"))
+					.constraint(primaryKey("uuid", "user", "series"))
 					.execute();
 			connection.createTableIfNotExists("EpisodeRate")
 					.column("uuid", SQLDataType.UUID.nullable(false))
@@ -700,28 +716,28 @@ public class Main
 					.column("episode", SQLDataType.UUID)
 					.column("numericRating", SQLDataType.BIGINT)
 					.column("verbalRating", SQLDataType.VARCHAR)
-					.constraint(primaryKey("uuid","user","episode"))
+					.constraint(primaryKey("uuid", "user", "episode"))
 					.execute();
 			connection.createTableIfNotExists("MovieRole")
 					.column("uuid", SQLDataType.UUID.nullable(false))
 					.column("user", SQLDataType.UUID)
 					.column("movie", SQLDataType.UUID)
 					.column("roles", SQLDataType.BLOB)
-					.constraint(primaryKey("uuid","user","movie"))
+					.constraint(primaryKey("uuid", "user", "movie"))
 					.execute();
 			connection.createTableIfNotExists("SeriesRole")
 					.column("uuid", SQLDataType.UUID.nullable(false))
 					.column("user", SQLDataType.UUID)
 					.column("series", SQLDataType.UUID)
 					.column("roles", SQLDataType.BLOB)
-					.constraint(primaryKey("uuid","user","series"))
+					.constraint(primaryKey("uuid", "user", "series"))
 					.execute();
 			connection.createTableIfNotExists("EpisodeRole")
 					.column("uuid", SQLDataType.UUID.nullable(false))
 					.column("user", SQLDataType.UUID)
 					.column("episode", SQLDataType.UUID)
 					.column("roles", SQLDataType.BLOB)
-					.constraint(primaryKey("uuid","user","episode"))
+					.constraint(primaryKey("uuid", "user", "episode"))
 					.execute();
 			connection.createTableIfNotExists("Movie")
 					.column("uuid", SQLDataType.UUID.nullable(false))
@@ -735,7 +751,7 @@ public class Main
 					.column("genres", SQLDataType.BLOB)
 					.column("directors", SQLDataType.BLOB)
 					.column("producers", SQLDataType.BLOB)
-					.constraint(primaryKey("uuid","ID"))
+					.constraint(primaryKey("uuid", "ID"))
 					.execute();
 			connection.createTableIfNotExists("Series")
 					.column("uuid", SQLDataType.UUID.nullable(false))
@@ -749,7 +765,7 @@ public class Main
 					.column("genres", SQLDataType.BLOB)
 					.column("directors", SQLDataType.BLOB)
 					.column("producers", SQLDataType.BLOB)
-					.constraint(primaryKey("uuid","ID"))
+					.constraint(primaryKey("uuid", "ID"))
 					.execute();
 			connection.createTableIfNotExists("Episode")
 					.column("uuid", SQLDataType.UUID.nullable(false))
@@ -764,7 +780,7 @@ public class Main
 					.column("series", SQLDataType.UUID)
 					.column("directors", SQLDataType.BLOB)
 					.column("producers", SQLDataType.BLOB)
-					.constraint(primaryKey("uuid","ID"))
+					.constraint(primaryKey("uuid", "ID"))
 					.execute();
 			connection.createTableIfNotExists("Genre")
 					.column("uuid", SQLDataType.UUID.nullable(false))
@@ -772,27 +788,27 @@ public class Main
 					.column("movies", SQLDataType.BLOB)
 					.column("series", SQLDataType.BLOB)
 					.column("episodes", SQLDataType.BLOB)
-					.constraint(primaryKey("uuid","name"))
+					.constraint(primaryKey("uuid", "name"))
 					.execute();
 			connection.createTableIfNotExists("Quote")
 					.column("uuid", SQLDataType.UUID.nullable(false))
 					.column("ID", SQLDataType.VARCHAR)
 					.column("text", SQLDataType.VARCHAR)
 					.column("participants", SQLDataType.BLOB)
-					.constraint(primaryKey("uuid","ID"))
+					.constraint(primaryKey("uuid", "ID"))
 					.execute();
 			connection.createTableIfNotExists("Goof")
 					.column("uuid", SQLDataType.UUID.nullable(false))
 					.column("ID", SQLDataType.VARCHAR)
 					.column("text", SQLDataType.VARCHAR)
 					.column("type", SQLDataType.VARCHAR)
-					.constraint(primaryKey("uuid","ID"))
+					.constraint(primaryKey("uuid", "ID"))
 					.execute();
 			connection.createTableIfNotExists("Trivia")
 					.column("uuid", SQLDataType.UUID.nullable(false))
 					.column("ID", SQLDataType.VARCHAR)
 					.column("text", SQLDataType.VARCHAR)
-					.constraint(primaryKey("uuid","ID"))
+					.constraint(primaryKey("uuid", "ID"))
 					.execute();
 		}
 	}
