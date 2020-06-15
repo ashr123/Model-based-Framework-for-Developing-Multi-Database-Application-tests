@@ -75,10 +75,11 @@ public class Main
 				simpleRead(eq("Movie", "title", movieName)).findFirst().get())).stream()
 				.map(entity -> (Entity) entity.get("user"))
 				.collect(toSet());
+
 //		return read(all("MovieRate")).stream()
-//						.filter(entity -> ((Entity) entity.get("movie")).get("title").equals(movieName))
-//						.map(entity -> (Entity) entity.get("user"))
-//						.collect(toSet());
+//				.filter(entity -> ((Entity) entity.get("movie")).get("title").equals(movieName))
+//				.map(entity -> (Entity) entity.get("user"))
+//				.collect(toSet());
 	}
 
 	private static void createEnvironment()
