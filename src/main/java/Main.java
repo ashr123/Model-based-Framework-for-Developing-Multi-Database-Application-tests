@@ -22,12 +22,40 @@ public class Main
 				"src/main/resources/schemas/schema.json",
 				true);
 
-		try (MongoClient mongoClient = MongoClients.create())
-		{
-			mongoClient.getDatabase("TestDB").drop();
-			mongoClient.getDatabase("myDB").drop();
-		}
+		dropTheBase();
 
+		createEnvironment();
+
+		Set<Entity>
+				top5WatchedItems = getTop5WatchedItems(),
+				usersThatRatedStarWars = getUsersThatRatedTheMovie("Star Wars: Episode I – The Phantom Menace");
+	}
+
+	private static Set<Entity> getTop5WatchedItems()
+	{
+		return Stream.of(read(all("Movie")),
+				read(all("Series")),
+				read(all("Episode")))
+				.flatMap(Collection::stream)
+				.sorted((entity1, entity2) -> ((Double) entity2.get("avgRating")).compareTo((Double) entity1.get("avgRating")))
+				.limit(5)
+				.collect(toSet());
+	}
+
+	private static Set<Entity> getUsersThatRatedTheMovie(String movieName)
+	{
+		return read(eq("MovieRate", "movie",
+				simpleRead(eq("Movie", "title", movieName)).findFirst().get())).stream()
+				.map(entity -> (Entity) entity.get("user"))
+				.collect(toSet());
+//		return read(all("MovieRate")).stream()
+//						.filter(entity -> ((Entity) entity.get("movie")).get("title").equals(movieName))
+//						.map(entity -> (Entity) entity.get("user"))
+//						.collect(toSet());
+	}
+
+	private static void createEnvironment()
+	{
 		final Calendar calendar = Calendar.getInstance();
 		final Calendar calendar2 = Calendar.getInstance();
 		calendar.set(1999, Calendar.MAY, 16);
@@ -528,22 +556,14 @@ public class Main
 				actorEpisodeRole63,
 				actorEpisodeRole64,
 				actorEpisodeRole65);
+	}
 
-		Set<Entity>
-				res = Stream.of(read(all("Movie")),
-				read(all("Series")),
-				read(all("Episode")))
-				.flatMap(Collection::stream)
-				.sorted((entity1, entity2) -> ((Double) entity2.get("avgRating")).compareTo((Double) entity1.get("avgRating")))
-				.limit(5)
-				.collect(toSet()),
-//				res2 = read(all("MovieRate")).stream()
-//						.filter(entity -> ((Entity) entity.get("movie")).get("title").equals("Star Wars: Episode I – The Phantom Menace"))
-//						.map(entity -> (Entity) entity.get("user"))
-//						.collect(toSet()),
-				res3 = read(eq("MovieRate", "movie",
-						simpleRead(eq("Movie", "title", "Star Wars: Episode I – The Phantom Menace")).findFirst().get())).stream()
-						.map(entity -> (Entity) entity.get("user"))
-						.collect(toSet());
+	private static void dropTheBase()
+	{
+		try (MongoClient mongoClient = MongoClients.create())
+		{
+			mongoClient.getDatabase("TestDB").drop();
+			mongoClient.getDatabase("myDB").drop();
+		}
 	}
 }
