@@ -28,8 +28,7 @@ public class Main
 	public static void main(String... args) throws IOException
 	{
 		final Pair<Function<Object, Object>, Function<Object, Object>> serializers =
-				Pair.of(
-						longNum -> new Date((Long) longNum),
+				Pair.of(longNum -> new Date((Long) longNum),
 						date -> ((Date) date).getTime());
 		Reader.loadConfAndSchema("src/main/resources/configs/multiDBConfiguration.json",
 				"src/main/resources/schemas/schema.json",
