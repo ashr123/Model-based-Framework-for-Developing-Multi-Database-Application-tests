@@ -2,7 +2,8 @@
   "classes": {
 	"User": {
 	  "primaryKey": [
-		"username","ID"
+		"username",
+		"ID"
 	  ],
 	  "properties": {
 		"username": {
