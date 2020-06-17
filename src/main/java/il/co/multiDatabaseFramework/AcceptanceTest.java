@@ -1,8 +1,10 @@
+package il.co.multiDatabaseFramework;
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import dataLayer.crud.Entity;
-import dataLayer.crud.Pair;
-import dataLayer.readers.Reader;
+import il.co.multiDatabaseFramework.crud.Entity;
+import il.co.multiDatabaseFramework.crud.Pair;
+import il.co.multiDatabaseFramework.readers.Reader;
 import iot.jcypher.database.DBAccessFactory;
 import iot.jcypher.database.DBProperties;
 import iot.jcypher.database.DBType;
@@ -16,14 +18,14 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static dataLayer.crud.Query.*;
-import static dataLayer.crud.filters.All.all;
-import static dataLayer.crud.filters.Eq.eq;
+import static il.co.multiDatabaseFramework.crud.Query.*;
+import static il.co.multiDatabaseFramework.crud.filters.All.all;
+import static il.co.multiDatabaseFramework.crud.filters.Eq.eq;
 import static java.util.stream.Collectors.toSet;
 import static org.jooq.impl.DSL.primaryKey;
 import static org.jooq.impl.DSL.using;
 
-public class Main
+public class AcceptanceTest
 {
 	public static void main(String... args) throws IOException
 	{
@@ -54,7 +56,8 @@ public class Main
 				top5WatchedItems = getTop5WatchedItems(),
 				usersThatRatedStarWars = getUsersThatRatedTheMovie("Star Wars: Episode I – The Phantom Menace");
 		System.out.println(usersThatRatedStarWars);
-		System.out.println(Reader.toJson(usersThatRatedStarWars));
+		System.out.println(Reader.toJson(top5WatchedItems));
+		System.out.println("\n" + Reader.toJson(usersThatRatedStarWars));
 	}
 
 	private static Set<Entity> getTop5WatchedItems()
