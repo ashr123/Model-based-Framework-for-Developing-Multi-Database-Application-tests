@@ -5,26 +5,6 @@
 	  "connStr": "bolt://localhost:7687",
 	  "username": "neo4j",
 	  "password": "neo4j1"
-	},
-	"neo2": {
-	  "type": "neo4j",
-	  "connStr": "bolt://localhost:11008",
-	  "username": "neo4j",
-	  "password": "neo4j1"
-	},
-	"mongo1": {
-	  "type": "mongodb",
-	  "connStr": "mongodb://localhost",
-	  "location": "myDB"
-	},
-	"mongo2": {
-	  "type": "mongodb",
-	  "connStr": "mongodb://localhost",
-	  "location": "TestDB"
-	},
-	"sql1": {
-	  "type": "sql",
-	  "connStr": "jdbc:sqlite:src/main/resources/sqliteDB/test.db"
 	}
   },
   "entities": {
