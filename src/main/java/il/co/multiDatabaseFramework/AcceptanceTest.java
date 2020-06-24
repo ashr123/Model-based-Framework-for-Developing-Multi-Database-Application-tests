@@ -73,10 +73,20 @@ public class AcceptanceTest
 
 	private static Set<Entity> getUsersThatRatedTheMovie(String movieName)
 	{
-		return read(eq("MovieRate", "movie",
-				simpleRead(eq("Movie", "title", movieName)).findFirst().get())).stream()
-				.map(entity -> (Entity) entity.get("user"))
-				.collect(toSet());
+		final var temp = new Object()
+		{
+			Set<Entity> output;
+		};
+		simpleRead(eq("Movie", "title", movieName)).findFirst()
+				.ifPresent(o -> temp.output = (read(eq("MovieRate", "movie", o)).stream()
+						.map(entity -> (Entity) entity.get("user"))
+						.collect(toSet())));
+		return temp.output;
+
+//		return read(eq("MovieRate", "movie",
+//				simpleRead(eq("Movie", "title", movieName)).findFirst().get())).stream()
+//				.map(entity -> (Entity) entity.get("user"))
+//				.collect(toSet());
 
 //		return read(all("MovieRate")).stream()
 //				.filter(entity -> ((Entity) entity.get("movie")).get("title").equals(movieName))
