@@ -14,6 +14,12 @@
 	"sql1": {
 	  "type": "sql",
 	  "connStr": "jdbc:sqlite:src/main/resources/sqliteDB/test.db"
+	},
+	"sql2": {
+	  "type": "sql",
+	  "connStr": "jdbc:mysql://localhost:3306/test",
+	  "username": "root",
+	  "password": "mysql123"
 	}
   },
   "entities": {
